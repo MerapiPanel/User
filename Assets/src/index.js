@@ -1,5 +1,6 @@
 const __ = window.__;
 const MUser = __.MUser;
+const csrf_token = MUser.csrf_token;
 const { endpoints, session } = MUser.opts;
 
 
@@ -291,6 +292,7 @@ function editUser(user) {
 
         __.dialog.confirm("Confirm Change ?", dialog_content).then(() => {
 
+            formData.append('csrf_token', csrf_token);
             __.http.post(endpoints.update, formData).then((result) => {
                 if (result.status) {
                     __.toast('User updated successfully', 5, 'text-success');
@@ -338,7 +340,7 @@ function deleteUser(user) {
             .append(`<p class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> This action cannot be undone.</p>`)
     )
         .then(() => {
-            __.http.post(endpoints.delete, { id: user.id }).then((result) => {
+            __.http.post(endpoints.delete, { id: user.id, csrf_token }).then((result) => {
                 if (result.code === 200) {
                     __.toast('User deleted successfully', 5, 'text-success');
                     MUser.render();
@@ -381,7 +383,7 @@ function suspendUser(user) {
     )
         .then(() => {
 
-            __.http.post(endpoints.update, { status: 1, id: user.id }).then((result) => {
+            __.http.post(endpoints.update, { status: 1, id: user.id, csrf_token }).then((result) => {
 
                 if (result.code === 200) {
                     __.toast('User suspended successfully', 5, 'text-success');
@@ -426,7 +428,7 @@ function unsuspendUser(user) {
     )
         .then(() => {
 
-            __.http.post(endpoints.update, { status: 2, id: user.id }).then((result) => {
+            __.http.post(endpoints.update, { status: 2, id: user.id, csrf_token }).then((result) => {
 
                 if (result.code === 200) {
                     __.toast('User unsuspended successfully', 5, 'text-success');
@@ -469,7 +471,7 @@ function forceLogout(user) {
     )
         .then(() => {
 
-            __.http.post(endpoints.forceLogout, { user_id: user.id }).then((result) => {
+            __.http.post(endpoints.forceLogout, { user_id: user.id, csrf_token }).then((result) => {
 
                 if (result.code === 200) {
                     __.toast('User force logged out successfully', 5, 'text-success');

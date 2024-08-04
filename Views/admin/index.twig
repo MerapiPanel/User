@@ -48,11 +48,12 @@
 </div>
 
 <div id="pagination" class="pagination justify-content-center mb-5 mt-3"></div>
-
-
 {% endblock %}
 
 {% block javascript %}
 {{ parent() }}
+<script>
+    __.MUser.csrf_token = "{{csrf_token()}}";
+</script>
 <script src="{{ '@user/dist/index.js' | assets }}"></script>
 {% endblock %}

@@ -86,7 +86,8 @@
                 return;
             }
             __.http.post("{{ '/api/User/uploadAvatar' | access_path }}", {
-                avatar: file
+                avatar: file,
+                csrf_token: "{{csrf_token()}}"
             }).then((result) => {
                 $("#avatar").attr('src', result.data);
             }).catch((err) => {
